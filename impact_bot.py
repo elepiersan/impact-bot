@@ -1,4 +1,5 @@
 from __future__ import print_function
+import time
 
 # Import rpy2 for working with r package scholar
 import rpy2
@@ -15,19 +16,23 @@ def compute_impact(persons):
 
     impact = 0  
     for (name, google_id) in persons.items():
-        info = scholar.get_profile(google_id)
 
-        # Convert to dictionary for easy handling (Bottleneck?)
+        # Get basic profile info (and convert to Python data
+        # structure)
+        info = scholar.get_profile(google_id)
         info = dict(zip(info.names, list(info)))
 
         # Extract number of total citations for given person
-        num_cites = int(info["total_cites"][0])
-
+        print("Measuring impact of %s" % info["name"][0])
+        try:
+            num_cites = int(info["total_cites"][0])
+        except:
+            num_cites = 0
+            
         # Compute simple impact measure (total sum of citations)
         impact += num_cites
-
+        
     return impact
-
         
 if __name__ == "__main__":
 
@@ -37,10 +42,8 @@ if __name__ == "__main__":
     # Compute impact
     total_impact = compute_impact(persons)
     
-    
-    print("Your impact today is %d " % total_impact)
+    print("Your impact today is %d. Well done!" % total_impact)
 
     
-    #pubs = scholar.get_publications(google_id)
 
     
