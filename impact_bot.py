@@ -1,6 +1,9 @@
 from __future__ import print_function
-import time
+
+# Import common modules
 import pickle
+import datetime
+import math
 
 # Import rpy2 for working with r package scholar
 import rpy2
@@ -22,6 +25,7 @@ from rpy2.robjects import r, pandas2ri
 # info[7]: ?
 
 def extract_scholar_publications(persons):
+    "Extract and return publication and citation information."
 
     # Import the scholar package
     scholar = importr("scholar")
@@ -41,33 +45,36 @@ def extract_scholar_publications(persons):
             publications[id] = df
             print("Success")
         except:
-            print("Extraction failed for %s" % name)
+            print("Extraction failed for %s. Ignoring data." % name)
             pass
             
     return publications
     
-def impact(publications):
-    """Compute the impact (total number of unique citations) from
-    publications."""
-    
-    # Extract unique titles and corresponding number of citations
+def unique_titles_vs_citations(publications):
+    "Extract unique titles and corresponding number of citations."
     titles = {}
     for (id, pubs) in publications.items():
         for index, title in pubs["title"].iteritems(): 
             titles[title] = pubs["cites"][index]
+    return titles
+
+def impact(publications):
+    """Compute the impact (total number of unique citations) from
+    publications."""
+    
+    # Extract unique titles with corresponding number of citations
+    titles = unique_titles_vs_citations(publications)
 
     # Compute total number of citations
     num_cites = sum(titles.values())
     return num_cites
 
 def h_index(publications):
+    "Compute the h_index of the combined lists of publications."
 
-    # Extract unique titles and corresponding number of citations
-    titles = {}
-    for (id, pubs) in publications.items():
-        for index, title in pubs["title"].iteritems(): 
-            titles[title] = pubs["cites"][index]
-    
+    # Extract unique titles with corresponding number of citations
+    titles = unique_titles_vs_citations(publications)
+
     # Sort list of num of citations in descending order
     cites = titles.values()
     cites.sort(reverse=True)
@@ -79,12 +86,33 @@ def h_index(publications):
     h_index = i
 
     return h_index
+
+def shooting_stars(publications, N=5):
+    "Compute the N papers with most citations per year."
+
+    # Find the current year
+    year = datetime.date.today().year
+
+    # Iterate through all papers and compute number of citations per year
+    titles = {}
+    for (id, pubs) in publications.items():
+        for index, title in pubs["title"].iteritems(): 
+            years = (year - pubs["year"][index]) + 1
+            if math.isnan(years):
+                #print("Year does not make sense for %s, ignoring." % title)
+                continue
+            titles[title] = pubs["cites"][index]/years
+
+    # Print top N paper (cited most per year):
+    stars = sorted(titles.iteritems(), key=lambda (k,v): (v,k))[-N:]
+    return stars
     
 if __name__ == "__main__":
 
     # Import input data
     from people import persons
 
+    # Help with R to Python (Pandas) data conversion
     pandas2ri.activate()
 
     # Extract publications data
@@ -96,9 +124,18 @@ if __name__ == "__main__":
 
     # Extract information from scholar
     publications = pickle.load(open(filename, "rb"))
-    
+
     print("Your impact today is %d. Well done!" % impact(publications))
     print("Your h-index today is %d. Awesome!" % h_index(publications))
+
+    # Shooting star papers
+    N = 5
+    stars = shooting_stars(publications, N=N)
+    print("%d most cited-per-year papers:" % N)
+    for (title, cites) in stars:
+        print("%d: %s (%s)" % (N, title, cites))
+        N = N-1
+        
 
 
     

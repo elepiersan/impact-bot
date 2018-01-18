@@ -6,5 +6,7 @@ persons = {"Marie E. Rognes": "BHyQJSAAAAAJ",
            "Vidar Tonaas Fauske": "6qtb7i4AAAAJ",
            "Eleonora Piersanti": "Nm1dkOoAAAAJ",
            "Karl Erik Holter": "nQ4qFwgAAAAJ",
+           "August Johansson": "gVn_3EsAAAAJ",
+           "Min Ragan-Kelley": "xSC3VSAAAAAJ",
 }
 
