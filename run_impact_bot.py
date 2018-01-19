@@ -11,7 +11,7 @@ def compute_todays_impact():
     # Extract information from scholar
     # Set this to False when testing, otherwise set this to True
     filename = "publications.pickle"
-    if False:
+    if True:
         publications = extract_scholar_publications(persons)
         pickle.dump(publications, open(filename, "wb"))
     else:
@@ -40,14 +40,18 @@ def compute_todays_impact():
     # Add new input to history and dump to database
     history.append((num_cites, h, stars))
     pickle.dump(history, open(database, "wb"))
-        
-    print("Your impact today is %d. Well done!" % num_cites)
-    print("Your h-index today is %d. Awesome!" % h_index(publications))
 
-    print("%d most cited-per-year papers:" % N)
+    # Create output mesage
+    message = []
+    message += ["Your impact today is %d. Well done!" % num_cites]
+    message += ["Your h-index today is %d. Awesome!" % h]
+    message += ["The shooting stars (most cited-per-year papers) are:"]
     for (title, cites) in stars:
-        print("%d: %s (%s)" % (N, title, cites))
+        message += ["%d: %s (%2.1f)" % (N, title, cites)]
         N = N-1
+    return "\n".join(message)
 
 if __name__ == "__main__":
-    compute_todays_impact()
+    message = compute_todays_impact()
+    print(message)
+    
