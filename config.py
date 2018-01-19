@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-import configparser
+import ConfigParser
 import os
 
 here = os.path.abspath(os.path.dirname(__file__))
-config = configparser.SafeConfigParser()
+config = ConfigParser.SafeConfigParser()
 files = config.read([
     './impactbot.ini',
     os.path.join(here, 'impactbot.ini'),
