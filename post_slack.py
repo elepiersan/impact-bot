@@ -29,4 +29,4 @@ def post_to_slack(message, channels):
     global _poster
     if _poster is None:
         _poster = SlackPoster(SLACK_TOKEN, channels)
-    sp.post(message)
+    _poster.post(message)
