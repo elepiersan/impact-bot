@@ -54,4 +54,5 @@ def compute_todays_impact():
 if __name__ == "__main__":
     message = compute_todays_impact()
     print(message)
-    post_to_slack(message, ["scan_project_leaders",])
+    post_to_slack(message, ["scan_department",])
+    print("Success!")
