@@ -23,6 +23,8 @@ class SlackPoster:
             )
 
 
+_poster = None
+
 def post_to_slack(message, channels):
     global _poster
     if _poster is None:
