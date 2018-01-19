@@ -5,7 +5,7 @@ import ConfigParser
 import os
 
 here = os.path.abspath(os.path.dirname(__file__))
-config = ConfigParser.SafeConfigParser()
+config = ConfigParser.SafeConfigParser({'token': os.environ.get("SLACK_API_TOKEN", None)})
 files = config.read([
     './impactbot.ini',
     os.path.join(here, 'impactbot.ini'),
@@ -13,5 +13,4 @@ files = config.read([
     os.path.expanduser('~/.impactbot.rc')])
 
 SLACK_TOKEN = config.get(
-    'Slack', 'token',
-    fallback=os.environ.get("SLACK_API_TOKEN", None))
+    'Slack', 'token')
