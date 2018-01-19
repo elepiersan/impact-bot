@@ -23,4 +23,4 @@ e.g. "Norway" interactively for the installation above.
 
 How to install the 'rpy2' module on Ubuntu:
 
-$ sudo apt-get install rpy2
+$ sudo apt-get install python-rpy2
