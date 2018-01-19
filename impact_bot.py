@@ -106,36 +106,3 @@ def shooting_stars(publications, N=5):
     # Print top N paper (cited most per year):
     stars = sorted(titles.iteritems(), key=lambda (k,v): (v,k))[-N:]
     return stars
-    
-if __name__ == "__main__":
-
-    # Import input data
-    from people import persons
-
-    # Help with R to Python (Pandas) data conversion
-    pandas2ri.activate()
-
-    # Extract publications data
-    filename = "publications.pickle"
-    if False:
-        publications = extract_scholar_publications(persons)
-        pickle.dump(publications, open(filename, "wb"))
-        exit()
-
-    # Extract information from scholar
-    publications = pickle.load(open(filename, "rb"))
-
-    print("Your impact today is %d. Well done!" % impact(publications))
-    print("Your h-index today is %d. Awesome!" % h_index(publications))
-
-    # Shooting star papers
-    N = 5
-    stars = shooting_stars(publications, N=N)
-    print("%d most cited-per-year papers:" % N)
-    for (title, cites) in stars:
-        print("%d: %s (%s)" % (N, title, cites))
-        N = N-1
-        
-
-
-    
