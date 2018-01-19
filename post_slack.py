@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from functools import lru_cache
-
 from slackclient import SlackClient
 
 from config import SLACK_TOKEN
@@ -24,12 +22,11 @@ class SlackPoster:
                 icon_emoji=':star2:'
             )
 
-@lru_cache()
-def make_post_function(channels):
-    sp = SlackPoster(SLACK_TOKEN, channels)
-    return sp.post
 
+_poster = None
 
 def post_to_slack(message, channels):
-    poster = make_post_function(channels)
-    poster(message)
+    global _poster
+    if _poster is None:
+        _poster = SlackPoster(SLACK_TOKEN, channels)
+    sp.post(message)
