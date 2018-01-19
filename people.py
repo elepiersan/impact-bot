@@ -8,5 +8,6 @@ persons = {"Marie E. Rognes": "BHyQJSAAAAAJ",
            "Karl Erik Holter": "nQ4qFwgAAAAJ",
            "August Johansson": "gVn_3EsAAAAJ",
            "Min Ragan-Kelley": "xSC3VSAAAAAJ",
+           "Cecile Daversin-Catty": "-GHS8PEAAAAJ",
 }
 
