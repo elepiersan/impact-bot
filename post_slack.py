@@ -20,8 +20,8 @@ class SlackPoster:
                 channel=ch,
                 text=message,
                 as_user=False,
-                username='lunchbot',
-                icon_emoji=':spaghetti:'
+                username='impactbot',
+                icon_emoji=':star2:'
             )
 
 @lru_cache()
