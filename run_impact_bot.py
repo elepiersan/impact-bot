@@ -8,15 +8,6 @@ def compute_todays_impact():
     # Help with R to Python (Pandas) data conversion
     pandas2ri.activate()
 
-    # Extract information from scholar
-    # Set this to False when testing, otherwise set this to True
-    filename = "publications.pickle"
-    if True:
-        publications = extract_scholar_publications(persons)
-        pickle.dump(publications, open(filename, "wb"))
-    else:
-        publications = pickle.load(open(filename, "rb"))
-
     # Load database 
     database = "history.pickle"
     # Set this to False when running, set to True when starting from
@@ -27,8 +18,16 @@ def compute_todays_impact():
         exit()
     else:
         history = pickle.load(open(database, "rb"))
-        print(history)
-        
+
+    # Extract information from scholar
+    # Set this to False when testing, otherwise set this to True
+    filename = "publications.pickle"
+    if True:
+        publications = extract_scholar_publications(persons)
+        pickle.dump(publications, open(filename, "wb"))
+    else:
+        publications = pickle.load(open(filename, "rb"))
+
     # Compute impact and h-index
     num_cites = impact(publications)
     h = h_index(publications)
